@@ -37,7 +37,7 @@ class SingleMenuItem(generics.RetrieveUpdateAPIView, generics.DestroyAPIView):
 
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
-#@permission_classes([AllowAny])
+@permission_classes([AllowAny])
 def display_menu(request):
     items = MenuItems.objects.all()
     if request.GET.get('category'):
