@@ -11,6 +11,7 @@ from django.core.paginator import Paginator, EmptyPage
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import permission_classes, throttle_classes
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
+from RESTAPI.forms import DemoForm, ModelForm
 # Create your views here.
 
 @api_view(['GET', 'POST'])
@@ -39,18 +40,20 @@ class SingleMenuItem(generics.RetrieveUpdateAPIView, generics.DestroyAPIView):
 #@permission_classes([IsAuthenticated])
 @permission_classes([AllowAny])
 def display_menu(request):
-    items = MenuItems.objects.all()
-    if request.GET.get('category'):
-        items = items.filter(category__title= request.GET.get('category'))
-    perpage = request.GET.get('per_page', default=2)
-    page = request.GET.get('page', default=1)
-    paginator = Paginator(items, per_page=perpage)
-    try:
-        items= paginator.page(number=page)
-    except:
-        items = []
-    serialized_item = MenuItemSerializer(items, many=True)
-    return Response(serialized_item.data)
+    if request.method == 'GET':
+        items = MenuItems.objects.all()
+        if request.GET.get('category'):
+            items = items.filter(category__title= request.GET.get('category'))
+        perpage = request.GET.get('per_page', default=2)
+        page = request.GET.get('page', default=1)
+        paginator = Paginator(items, per_page=perpage)
+        try:
+            items= paginator.page(number=page)
+        except:
+
+            items = []
+        serialized_item = MenuItemSerializer(items, many=True)
+        return Response(serialized_item.data)
 @api_view(['GET'])
 @permission_classes([AllowAny])
 @throttle_classes([AnonRateThrottle, UserRateThrottle])
@@ -65,3 +68,23 @@ def create_single_menu(request):
         serialized_item.save()
         return Response({"message" : "Resource created successfully"})
     return Response({"message" : "Error occurred while creating resources!"})
+@api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
+def display_form(request):
+    demoForm = DemoForm()
+    context = {'form' : demoForm, 'nums' : range(100)}
+    return render(request, 'form.html', context)
+
+@api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
+def display_menu_form(request):
+    modelForm = ModelForm()
+    if request.method == 'POST':
+        modelForm = ModelForm(request.POST)
+        if modelForm.is_valid():
+            modelForm.save()
+    context = {'model_form' : modelForm}
+    return render(request, 'menu.html', context)
+
+
+
