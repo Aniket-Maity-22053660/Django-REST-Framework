@@ -20,6 +20,5 @@ class MenuItems(models.Model):
 
 class Photo(models.Model):
     title=models.CharField(max_length=255)
-    image=models.ImageField(upload_to="avatar/")
+    image=models.FileField(upload_to="avatar/")
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    

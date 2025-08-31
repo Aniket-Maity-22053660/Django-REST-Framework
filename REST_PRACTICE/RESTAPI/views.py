@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -114,7 +114,7 @@ def upload_photo(request):
         form = PhotoForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return HttpResponse("Resource created successfully!")
+            return redirect('upload_photo')
     else:
         form = PhotoForm()
     photos = Photo.objects.all()[:10]

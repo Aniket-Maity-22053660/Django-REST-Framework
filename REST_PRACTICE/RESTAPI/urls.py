@@ -14,5 +14,5 @@ urlpatterns = [
     path('display-form/', views.display_form, name='display_form'),
     path('display-menu-form/', views.display_menu_form),
     path('my-view/', views.my_view),
-    path('upload-photo/', views.upload_photo)
+    path('upload-photo/', views.upload_photo, name='upload_photo')
 ]
