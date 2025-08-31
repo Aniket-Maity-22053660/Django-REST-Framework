@@ -1,0 +1,14 @@
+{% load static %}
+<h1>Upload a photo!</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" value="">Submit</button>
+</form>
+
+<ul >
+{% for p in photos%}
+<li style="display:inline-block">{{p.title}} - <img src="{{ p.image.url }}" alt="{{ p.title }}" width="250px" height="300px"></li>
+{% endfor %}
+</ul>

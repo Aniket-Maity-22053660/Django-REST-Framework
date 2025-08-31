@@ -6,12 +6,12 @@ from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework import generics
 from .serializers import MenuItemSerializer
-from .models import MenuItems, Category
+from .models import MenuItems, Category, Photo
 from django.core.paginator import Paginator, EmptyPage
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import permission_classes, throttle_classes
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
-from RESTAPI.forms import DemoForm, ModelForm
+from RESTAPI.forms import DemoForm, ModelForm, PhotoForm
 from django.http import HttpResponse, HttpResponseNotFound
 from datetime import datetime
 from django import forms
@@ -106,5 +106,19 @@ def my_view(request):
     context = {'menu' : serialized_item.data, 'current' : datetime.now()}
 
     return render(request, 'detail.html', context)
+
+@api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
+def upload_photo(request):
+    if request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Resource created successfully!")
+    else:
+        form = PhotoForm()
+    photos = Photo.objects.all()[:10]
+    return render(request, 'upload_photo.html', {'form' : form, 'photos' : photos})
+
 
 
