@@ -1,11 +1,11 @@
 from django import forms
-from RESTAPI.models import MenuItems
+from RESTAPI.models import MenuItems, Category
 
 class DemoForm(forms.Form):
-    name = forms.CharField(widget=forms.Textarea(attrs= {'rows':5}))
-    email = forms.EmailField(label="Enter an email address")
+    slug = forms.SlugField()
+    title = forms.CharField(max_length=255)
 
 class ModelForm(forms.ModelForm):
     class Meta:
-        model=MenuItems
+        model=Category
         fields = '__all__'

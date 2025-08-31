@@ -1,7 +1,10 @@
+{% load static %}
 <p>Menu Items</p>
 
-<form action="" method="">
+<form action="" method="POST">
     {% csrf_token %}
     {{model_form.as_p}}
     <input type="submit" value="submit">
+    <a href="{% url 'display_form' %}">form</a>
+    <img src="{% static 'image_1.png' %}" alt="image">
 </form>

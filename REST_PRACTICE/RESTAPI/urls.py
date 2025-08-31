@@ -11,6 +11,7 @@ urlpatterns = [
     path('display-menu/', views.display_menu),
     path('display-single-menu/<int:key>/', views.display_single_menu),
     path('create-single-menu/', views.create_single_menu),
-    path('display-form/', views.display_form),
+    path('display-form/', views.display_form, name='display_form'),
     path('display-menu-form/', views.display_menu_form),
+    path('my-view/', views.my_view),
 ]
